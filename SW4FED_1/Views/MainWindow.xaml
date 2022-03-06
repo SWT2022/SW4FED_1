@@ -16,7 +16,7 @@
                 <MenuItem Header="Save _As" Command="{Binding SaveAsCommand}" />
                 <MenuItem Header="E_xit" Command="{Binding CloseAppCommand}"/>
             </MenuItem>
-            <MenuItem Header="_Agents">
+            <MenuItem Header="_Debtors">
                 <MenuItem Header="_Previous" Command="{Binding PreviusCommand}"/>
                 <MenuItem Header="_Next" Command="{Binding NextCommand}"/>
                 <MenuItem Header="_Add new" Command="{Binding AddCommand}"/>
@@ -49,9 +49,9 @@
             </Button>
         </ToolBar>
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Background="AliceBlue">
-            <StatusBarItem Content="Agents Count:" />
+            <StatusBarItem Content="Debtors Count:" />
             <StatusBarItem Name="sbiAgentsCount" Width="40"
-                           Content="{Binding Path=Debtors.Count}" />
+                           Content="{Binding Path=Debtors.Count}" HorizontalAlignment="Left" />
         </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -66,6 +66,16 @@
                      HorizontalAlignment="Left" 
                      MinWidth="58"
                      Text="{Binding Path=CurrentDebtor.Name}" 
+                     Style="{StaticResource TextBoxStyle}"
+                     IsReadOnly="True"
+                 />
+            <Label Margin="0,39,0,0" >TotalDebt</Label>
+            <TextBox 
+                     Margin="39,40,0,0" 
+                     Grid.Column="1"
+                     HorizontalAlignment="Left" 
+                     MinWidth="58"
+                     Text="{Binding Path=CurrentDebtor.TotalDebt}" 
                      Style="{StaticResource TextBoxStyle}"
                      IsReadOnly="True"
                  />

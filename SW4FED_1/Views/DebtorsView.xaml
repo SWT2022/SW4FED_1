@@ -1,0 +1,42 @@
+﻿<Window x:Class="SW4FED_1.Views.DebtorsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SW4FED_1.Views"
+        xmlns:prism="http://prismlibrary.com/"
+        mc:Ignorable="d"
+        
+        Title="Add new debtor" Height="214" Width="300">
+    <Grid>
+
+        <Label Height="28" Margin="0,8,0,0" Name="label1"
+               VerticalAlignment="Top" HorizontalAlignment="Left" >Name</Label>
+        <Label Height="28" Margin="0,37,0,0" Name="label2"
+               VerticalAlignment="Top" HorizontalAlignment="Left" >Initial Debt</Label>
+        <TextBox
+            Style="{StaticResource TextBoxStyle}"
+                 IsReadOnly="False"
+                 Margin="100,10,0,0" 
+                 Name="tbxId" 
+                 Width="150"
+                 Text="{Binding Path=CurrentDebtor.Name}"/>
+        <TextBox
+                 Style="{StaticResource TextBoxStyle}"
+                 IsReadOnly="False"
+                 Margin="100,39,14,0" 
+                 Text="{Binding Path=CurrentDebtor.TotalDebt}" Width="150" />
+        <Button Margin="100,0,0,0"
+                IsDefault="True"
+                Style="{StaticResource ButtonStyle}"
+                Name="btnOK" Content="OK"
+                Command="{Binding Path=OkBtnCommand}" Click="Ok_BtnCllick" VerticalAlignment="Center"
+        />
+        <Button Margin="185,0,0,0"
+                Style="{StaticResource ButtonStyle}"
+                Name="btnCancel"
+                Content="Cancel" 
+                IsCancel="True" VerticalAlignment="Center"
+                />
+    </Grid>
+</Window>

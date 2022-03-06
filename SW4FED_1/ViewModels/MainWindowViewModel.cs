@@ -8,6 +8,7 @@ using System.Windows;
 using Prism.Commands;
 using Prism.Mvvm;
 using SW4FED_1.Models;
+using SW4FED_1.Views;
 
 namespace SW4FED_1.ViewModels
 {
@@ -18,9 +19,9 @@ namespace SW4FED_1.ViewModels
 
         public MainWindowViewModel()
         {
-            Debtors = new ObservableCollection<Debtors>();
-            Debtors.Add(new Debtors("Jan"));
-            CurrentDebtor = Debtors[0];
+            debtors = new ObservableCollection<Debtors>();
+            debtors.Add(new Debtors("Jan", 314));
+            CurrentDebtor = debtors[0];
 
         }
 
@@ -140,18 +141,18 @@ namespace SW4FED_1.ViewModels
         void ExecuteAddCommand()
         {
             var newDebtor = new Debtors();
-            //var vm = new AgentViewModel("Add new agent", newAgent);
+            var vm = new DebtorsViewModel("Add new Debtor", newDebtor);
 
-            //var dlg = new AgentView
-            //{
-            //    DataContext = vm
-            //};
-            //if (dlg.ShowDialog() == true)
-            //{
-            //    Agents.Add(newAgent);
-            //    CurrentAgent = newAgent; // Or CurrentIndex = Agents.Count - 1;
-            //    Dirty = true;
-            //}
+            var dlg = new DebtorsView
+            {
+                DataContext = vm
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                Debtors.Add(newDebtor);
+                CurrentDebtor = newDebtor; // Or CurrentIndex = Agents.Count - 1;
+                Dirty = true;
+            }
         }
 
         private DelegateCommand deleteCommand;
@@ -185,6 +186,37 @@ namespace SW4FED_1.ViewModels
         void ExecuteCloseAppCommand()
         {
             Application.Current.MainWindow.Close();
+        }
+
+        private DelegateCommand _editCommand;
+        public DelegateCommand EditCommand =>
+            _editCommand ?? (_editCommand = new DelegateCommand(ExecuteEditCommand, CanExecuteEditCommand)
+            .ObservesProperty(() => CurrentIndex));
+
+        void ExecuteEditCommand()
+        {
+            var tempDebtor = CurrentDebtor.Clone();
+            var vm = new DebtorsViewModel("Edit agent", tempDebtor)
+            {
+                
+            };
+            var dlg = new DebtorsView
+            {
+                DataContext = vm,
+                Owner = Application.Current.MainWindow
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                // Copy values back
+                CurrentDebtor.Name = tempDebtor.Name;
+                CurrentDebtor.TotalDebt = tempDebtor.TotalDebt;
+                Dirty = true;
+            }
+        }
+
+        bool CanExecuteEditCommand()
+        {
+            return CurrentIndex >= 0;
         }
 
         #endregion
