@@ -19,13 +19,15 @@ namespace SW4FED_1.ViewModels
 
         public MainWindowViewModel()
         {
-            debtors = new ObservableCollection<Debtors>();
-            debtors.Add(new Debtors("Jan", 314));
-            CurrentDebtor = debtors[0];
 
+            debtors = new ObservableCollection<Debtors>();
+            debtors.Add(new Debtors("Jan", 314.876));
+            CurrentDebtor = debtors[0];
         }
 
         #region Properties
+
+        
 
         private ObservableCollection<Debtors> debtors;
         public ObservableCollection<Debtors> Debtors
@@ -81,12 +83,6 @@ namespace SW4FED_1.ViewModels
             }
         }
 
-        private Debts debt;
-
-        public Debts Debt
-        {
-            get { return debt; }
-        }
 
         #endregion Properties
 
@@ -190,7 +186,8 @@ namespace SW4FED_1.ViewModels
 
         private DelegateCommand _editCommand;
         public DelegateCommand EditCommand =>
-            _editCommand ?? (_editCommand = new DelegateCommand(ExecuteEditCommand, CanExecuteEditCommand)
+            _editCommand ?? (_editCommand = new
+            DelegateCommand(ExecuteEditCommand, CanExecuteEditCommand)
             .ObservesProperty(() => CurrentIndex));
 
         void ExecuteEditCommand()
@@ -213,8 +210,37 @@ namespace SW4FED_1.ViewModels
                 Dirty = true;
             }
         }
-
         bool CanExecuteEditCommand()
+        {
+            return CurrentIndex >= 0;
+        }
+        private DelegateCommand _editDebitCommand;
+        public DelegateCommand EditDebitCommand =>
+            _editDebitCommand ?? (_editDebitCommand = new
+            DelegateCommand(ExecuteEditDebitCommand, CanExecuteEditDebitCommand)
+            .ObservesProperty(() => CurrentIndex));
+
+        void ExecuteEditDebitCommand()
+        {
+            var tempDebtor = CurrentDebtor.Clone();
+            var vm = new DebtsViewModel("Edit debit", tempDebtor)
+            {
+
+            };
+            var dlg = new DebtsView
+            {
+                DataContext = vm,
+                Owner = Application.Current.MainWindow
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                // Copy values back
+                CurrentDebtor = tempDebtor;
+                Dirty = true;
+            }
+        }
+
+        bool CanExecuteEditDebitCommand()
         {
             return CurrentIndex >= 0;
         }

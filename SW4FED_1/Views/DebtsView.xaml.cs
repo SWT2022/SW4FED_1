@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SW4FED_1.Models;
+using SW4FED_1.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +25,16 @@ namespace SW4FED_1.Views
         {
             InitializeComponent();
         }
+
+        //private void AddValueBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //var vm = DataContext as DebtsViewModel;
+        //    //var newDebit = new Debts("342", 1234);
+        //    //vm.Debts.Add(newDebit);
+        //    //if (vm.IsValid)
+        //    //    DialogResult = true;
+        //    //else
+        //    //    MessageBox.Show("Enter values for Name and Initial debt", "Missing data");
+        //}
     }
 }

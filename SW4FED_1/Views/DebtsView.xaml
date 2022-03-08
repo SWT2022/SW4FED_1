@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
         xmlns:local="clr-namespace:SW4FED_1.Views"
         mc:Ignorable="d"
+        
         Title="DebtsView" Height="450" Width="800">
     <DockPanel Name="dockPanelMain">
         <Menu DockPanel.Dock="Top" Name="mainMenu">
@@ -65,14 +67,14 @@
                      Grid.Column="1"
                      HorizontalAlignment="Left" 
                      MinWidth="58"
-                     Text="{Binding Path=CurrentDebtor.Name}" 
+                     Text="{Binding Path=CurrentDebt.debit}" 
                      Style="{StaticResource TextBoxStyle}"
-                     IsReadOnly="True"
+                     IsReadOnly="False"
                  />
 
 
-            <DataGrid ItemsSource="{Binding Path=Debtors}" 
-                      SelectedItem="{Binding Path=CurrentDebtor}"    
+            <DataGrid ItemsSource="{Binding Path=Debts}" 
+                      SelectedItem="{Binding Path=CurrentDebt}"    
                       SelectedIndex="{Binding Path=CurrentIndex}"
                       IsSynchronizedWithCurrentItem="True"
                       Grid.Column="2" 
@@ -83,19 +85,19 @@
                       MinRowHeight="12" 
                      
                      >
-                <!--<i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <prism:InvokeCommandAction Command="{Binding EditCommand}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>-->
+                
 
             </DataGrid>
             <Button Grid.Column="1" Content="Add Value"
                     HorizontalAlignment="Left" Margin="39,50,0,0" VerticalAlignment="Top"
-                    RenderTransformOrigin="0.676,0.705" Width="75" Height="23"/>
+                    RenderTransformOrigin="0.676,0.705" Width="75" Height="23"
+                    Command="{Binding AddValueCommand}"/>
+                    
             <Button Grid.Column="1" Content="Close"
                     HorizontalAlignment="Left" Margin="150,50,0,0"
-                    VerticalAlignment="Top" RenderTransformOrigin="-0.167,-0.317" Width="75" Height="23"/>
+                    VerticalAlignment="Top" RenderTransformOrigin="-0.167,-0.317" Width="75" Height="23"
+                    IsCancel="True"/>
+                    
 
         </Grid>
 

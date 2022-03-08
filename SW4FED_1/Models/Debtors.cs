@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,6 +62,18 @@ namespace SW4FED_1.Models
                 SetProperty(ref _totalDebt, value);
             }
         }
+
+        //public List<Debts> Debt
+        //{
+        //    get
+        //    {
+        //        return _debt;
+        //    }
+        //    set
+        //    {
+        //        SetProperty(ref _debt, value);
+        //    }
+        //}
 
 
 
