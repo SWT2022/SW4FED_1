@@ -6,7 +6,98 @@
         xmlns:local="clr-namespace:SW4FED_1.Views"
         mc:Ignorable="d"
         Title="DebtsView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+    <DockPanel Name="dockPanelMain">
+        <Menu DockPanel.Dock="Top" Name="mainMenu">
+            <MenuItem Header="_File" >
+                <MenuItem Header="_New" Command="{Binding NewFileCommand}"/>
+                <MenuItem Header="_Open" Command="{Binding OpenFileCommand}" />
+                <MenuItem Header="_Save" Command="{Binding SaveCommand}" />
+                <MenuItem Header="Save _As" Command="{Binding SaveAsCommand}" />
+                <MenuItem Header="E_xit" Command="{Binding CloseAppCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Debtors">
+                <MenuItem Header="_Previous" Command="{Binding PreviusCommand}"/>
+                <MenuItem Header="_Next" Command="{Binding NextCommand}"/>
+                <MenuItem Header="_Add new" Command="{Binding AddCommand}"/>
+                <MenuItem Header="_Edit" Command="{Binding EditCommand}"/>
+                <MenuItem Header="_Delete" Command="{Binding DeleteCommand}"/>
+            </MenuItem>
+
+        </Menu>
+        <ToolBar DockPanel.Dock="Top" Height="auto"
+                 FontSize="20" FontWeight="Bold"
+                 Background="AliceBlue">
+
+            <Button Height="auto" 
+                    ToolTip="Move to previous agent"
+                    Command="{Binding PreviusCommand}"
+                    >
+            </Button>
+            <Button Height="auto"  
+                    ToolTip="Move to next agent"
+                    Command="{Binding NextCommand}"
+                    >
+            </Button>
+            <Button ToolTip="Add a new agent"
+                    Command="{Binding AddCommand}"
+                    >
+            </Button>
+            <Button ToolTip="Delete selected agent"
+                    Command="{Binding DeleteCommand}"
+                    >
+            </Button>
+        </ToolBar>
+        <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Background="AliceBlue">
+            <StatusBarItem Content="Debtors Count:" />
+            <StatusBarItem Name="sbiAgentsCount" Width="40"
+                           Content="{Binding Path=Debtors.Count}" HorizontalAlignment="Left" />
+        </StatusBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="371*"/>
+                <ColumnDefinition Width="362*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Label Margin="0,8,0,0" >Value</Label>
+            <TextBox 
+                     Margin="39,10,0,0" 
+                     Grid.Column="1"
+                     HorizontalAlignment="Left" 
+                     MinWidth="58"
+                     Text="{Binding Path=CurrentDebtor.Name}" 
+                     Style="{StaticResource TextBoxStyle}"
+                     IsReadOnly="True"
+                 />
+
+
+            <DataGrid ItemsSource="{Binding Path=Debtors}" 
+                      SelectedItem="{Binding Path=CurrentDebtor}"    
+                      SelectedIndex="{Binding Path=CurrentIndex}"
+                      IsSynchronizedWithCurrentItem="True"
+                      Grid.Column="2" 
+                      Margin="9,9,9,9"  
+                      CanUserAddRows="False" 
+                      CanUserDeleteRows="False" 
+                      IsReadOnly="True"
+                      MinRowHeight="12" 
+                     
+                     >
+                <!--<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <prism:InvokeCommandAction Command="{Binding EditCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>-->
+
+            </DataGrid>
+            <Button Grid.Column="1" Content="Add Value"
+                    HorizontalAlignment="Left" Margin="39,50,0,0" VerticalAlignment="Top"
+                    RenderTransformOrigin="0.676,0.705" Width="75" Height="23"/>
+            <Button Grid.Column="1" Content="Close"
+                    HorizontalAlignment="Left" Margin="150,50,0,0"
+                    VerticalAlignment="Top" RenderTransformOrigin="-0.167,-0.317" Width="75" Height="23"/>
+
+        </Grid>
+
+    </DockPanel>
 </Window>
