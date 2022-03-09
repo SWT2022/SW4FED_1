@@ -15,22 +15,16 @@ namespace SW4FED_1.ViewModels
 {
     internal class DebtsViewModel : BindableBase
     {
-        public DebtsViewModel(string title, Debtors debtor)
+        public DebtsViewModel(string title, Debtors debtor, Debts debts)
         {
-           debts = new ObservableCollection<Debts>();
 
             Title = title;
-            CurrentDebt = debtor;
+            CurrentDebtor = debtor;
+            NewDebt = debts;
+           
 
         }
 
-        private ObservableCollection<Debts> debts;
-
-        public ObservableCollection<Debts> Debts
-        {
-            get { return debts; }
-            set { SetProperty(ref debts, value); }
-        }
 
         #region Properties
         string title;
@@ -43,15 +37,11 @@ namespace SW4FED_1.ViewModels
             }
         }
 
-        Debts currentDebt;
-
-        public Debts CurrentDebt
+        Debts newDebt;
+        public Debts NewDebt
         {
-            get { return currentDebt; }
-            set
-            {
-                SetProperty(ref currentDebt, value);
-            }
+            get { return newDebt; }
+            set { SetProperty(ref newDebt, value); }
         }
 
         Debtors currentDebtor;
@@ -79,12 +69,12 @@ namespace SW4FED_1.ViewModels
         public DelegateCommand AddValueCommand =>
             addValueCommand ?? (addValueCommand = new
             DelegateCommand(ExecuteAddValueCommand, CanExecuteAddValueCommand)
-            .ObservesProperty(() => CurrentDebt.Debit));
+            .ObservesProperty(() => NewDebt.Debit)
+            );
 
         void ExecuteAddValueCommand()
         {
-            var newDebit = new Debts("342", 1234);
-            debts.Add(newDebit);
+            
         }
 
         bool CanExecuteAddValueCommand()

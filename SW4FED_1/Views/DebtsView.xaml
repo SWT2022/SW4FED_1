@@ -67,15 +67,13 @@
                      Grid.Column="1"
                      HorizontalAlignment="Left" 
                      MinWidth="58"
-                     Text="{Binding Path=CurrentDebt.debit}" 
+                     Text="{Binding Path=NewDebt.Debit}" 
                      Style="{StaticResource TextBoxStyle}"
                      IsReadOnly="False"
                  />
 
 
-            <DataGrid ItemsSource="{Binding Path=Debts}" 
-                      SelectedItem="{Binding Path=CurrentDebt}"    
-                      SelectedIndex="{Binding Path=CurrentIndex}"
+            <DataGrid ItemsSource="{Binding Path=CurrentDebtor.ListOfDebts}" 
                       IsSynchronizedWithCurrentItem="True"
                       Grid.Column="2" 
                       Margin="9,9,9,9"  
@@ -83,7 +81,6 @@
                       CanUserDeleteRows="False" 
                       IsReadOnly="True"
                       MinRowHeight="12" 
-                     
                      >
                 
 
@@ -91,7 +88,7 @@
             <Button Grid.Column="1" Content="Add Value"
                     HorizontalAlignment="Left" Margin="39,50,0,0" VerticalAlignment="Top"
                     RenderTransformOrigin="0.676,0.705" Width="75" Height="23"
-                    Command="{Binding AddValueCommand}"/>
+                    Command="{Binding EditDebitCommand}" Click="AddValueBtn_Click"/>
                     
             <Button Grid.Column="1" Content="Close"
                     HorizontalAlignment="Left" Margin="150,50,0,0"

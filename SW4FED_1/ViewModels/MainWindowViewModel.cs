@@ -19,15 +19,15 @@ namespace SW4FED_1.ViewModels
 
         public MainWindowViewModel()
         {
-
-            debtors = new ObservableCollection<Debtors>();
-            debtors.Add(new Debtors("Jan", 314.876));
-            CurrentDebtor = debtors[0];
+            
+            Debtors = new ObservableCollection<Debtors>();
+            Debtors.Add(new Debtors("Jan", 314.876));
+            CurrentDebtor = Debtors[0];
+        
         }
 
         #region Properties
 
-        
 
         private ObservableCollection<Debtors> debtors;
         public ObservableCollection<Debtors> Debtors
@@ -184,36 +184,7 @@ namespace SW4FED_1.ViewModels
             Application.Current.MainWindow.Close();
         }
 
-        private DelegateCommand _editCommand;
-        public DelegateCommand EditCommand =>
-            _editCommand ?? (_editCommand = new
-            DelegateCommand(ExecuteEditCommand, CanExecuteEditCommand)
-            .ObservesProperty(() => CurrentIndex));
-
-        void ExecuteEditCommand()
-        {
-            var tempDebtor = CurrentDebtor.Clone();
-            var vm = new DebtorsViewModel("Edit agent", tempDebtor)
-            {
-                
-            };
-            var dlg = new DebtorsView
-            {
-                DataContext = vm,
-                Owner = Application.Current.MainWindow
-            };
-            if (dlg.ShowDialog() == true)
-            {
-                // Copy values back
-                CurrentDebtor.Name = tempDebtor.Name;
-                CurrentDebtor.TotalDebt = tempDebtor.TotalDebt;
-                Dirty = true;
-            }
-        }
-        bool CanExecuteEditCommand()
-        {
-            return CurrentIndex >= 0;
-        }
+       
         private DelegateCommand _editDebitCommand;
         public DelegateCommand EditDebitCommand =>
             _editDebitCommand ?? (_editDebitCommand = new
@@ -222,20 +193,17 @@ namespace SW4FED_1.ViewModels
 
         void ExecuteEditDebitCommand()
         {
-            var tempDebtor = CurrentDebtor.Clone();
-            var vm = new DebtsViewModel("Edit debit", tempDebtor)
-            {
+            var newDebt = new Debts("dato", 0);
+            var vm = new DebtsViewModel("Add new Debtor", CurrentDebtor, newDebt);
 
-            };
             var dlg = new DebtsView
             {
-                DataContext = vm,
-                Owner = Application.Current.MainWindow
+                DataContext = vm
             };
             if (dlg.ShowDialog() == true)
             {
-                // Copy values back
-                CurrentDebtor = tempDebtor;
+                CurrentDebtor.TotalDebt += newDebt.Debit;
+                CurrentDebtor.ListOfDebts.Add(newDebt);
                 Dirty = true;
             }
         }

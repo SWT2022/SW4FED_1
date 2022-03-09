@@ -80,7 +80,8 @@
                      Style="{StaticResource TextBoxStyle}"
                      IsReadOnly="True"
                  />
-            <DataGrid ItemsSource="{Binding Path=Debtors}" 
+            <DataGrid Name="DebtorList"
+                      ItemsSource="{Binding Path=Debtors}" 
                       SelectedItem="{Binding Path=CurrentDebtor}"    
                       SelectedIndex="{Binding Path=CurrentIndex}"
                       IsSynchronizedWithCurrentItem="True"
@@ -90,8 +91,13 @@
                       CanUserDeleteRows="False" 
                       IsReadOnly="True"
                       MinRowHeight="12" 
-                     
-                     >
+                      AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                <DataGridTextColumn Header="TotalDebt" Binding="{Binding TotalDebt}" Width="1*"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*"/>
+                </DataGrid.Columns>
+
+                
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
                         <prism:InvokeCommandAction Command="{Binding EditDebitCommand}"/>

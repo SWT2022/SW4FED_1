@@ -9,7 +9,7 @@ namespace SW4FED_1.Models
 {
     public class Debts : BindableBase
     {
-        string? _date;
+        string _date;
         double _debit;
 
         public Debts(string date, double debit)
@@ -19,8 +19,7 @@ namespace SW4FED_1.Models
         }
         public Debts()
         {
-            _date = null;
-            _debit = 0;
+            
         }
 
         public string Date

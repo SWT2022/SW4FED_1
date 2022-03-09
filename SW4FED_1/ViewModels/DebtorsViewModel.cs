@@ -19,6 +19,7 @@ namespace SW4FED_1.ViewModels
             Title = title;
             CurrentDebtor = debtor;
 
+
         }
 
         #region Properties

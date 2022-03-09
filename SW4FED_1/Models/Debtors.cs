@@ -10,21 +10,22 @@ namespace SW4FED_1.Models
 {
     public class Debtors : BindableBase
     {
-        string? _name;
-        //List<Debts>? _debt;
+        string _name;
+        List<Debts> _ListOfDebts;
         double _totalDebt;
 
         public Debtors(string name, double totalDebt)
         {
             _name = name;
             _totalDebt = totalDebt;
-   
+            _ListOfDebts = new List<Debts>();
+
         }
+        
 
         public Debtors()
         {
-           
-
+            _ListOfDebts = new List<Debts>();
         }
 
         public Debtors? Clone()
@@ -62,18 +63,19 @@ namespace SW4FED_1.Models
                 SetProperty(ref _totalDebt, value);
             }
         }
+        public List<Debts> ListOfDebts
+        {
+            get
+            {
+                return _ListOfDebts;
+            }
+            set
+            {
+                SetProperty(ref _ListOfDebts, value);
+            }
+        }
 
-        //public List<Debts> Debt
-        //{
-        //    get
-        //    {
-        //        return _debt;
-        //    }
-        //    set
-        //    {
-        //        SetProperty(ref _debt, value);
-        //    }
-        //}
+        
 
 
 
