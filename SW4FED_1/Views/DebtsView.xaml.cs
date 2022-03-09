@@ -32,7 +32,7 @@ namespace SW4FED_1.Views
             if (vm.IsValid)
                 DialogResult = true;
             else
-                MessageBox.Show("Enter values for Name and Initial debt", "Missing data");
+                MessageBox.Show("Enter values for debit", "Missing data");
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
 using SW4FED_1.Models;
@@ -61,16 +63,6 @@ namespace SW4FED_1.ViewModels
             }
         }
 
-        public string Title
-        {
-            get
-            {
-                var s = "";
-                if (Dirty)
-                    s = "*";
-                return Filename + s + " - " + AppTitle;
-            }
-        }
 
         private bool dirty = false;
         public bool Dirty
@@ -86,9 +78,7 @@ namespace SW4FED_1.ViewModels
 
         #endregion Properties
 
-        #region Methods
 
-        #endregion
 
         #region Commands
 
@@ -158,7 +148,7 @@ namespace SW4FED_1.ViewModels
 
         void ExecuteDeleteCommand()
         {
-            MessageBoxResult res = MessageBox.Show("Are you sure you want to delete agent " + CurrentDebtor.Name +
+            MessageBoxResult res = MessageBox.Show("Are you sure you want to delete debtor " + CurrentDebtor.Name +
                 "?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
             if (res == MessageBoxResult.Yes)
             {
@@ -193,7 +183,7 @@ namespace SW4FED_1.ViewModels
 
         void ExecuteEditDebitCommand()
         {
-            var newDebt = new Debts("dato", 0);
+            var newDebt = new Debts(DateTime.UtcNow.ToString("MM-dd-yyyy"), 0);
             var vm = new DebtsViewModel("Add new Debtor", CurrentDebtor, newDebt);
 
             var dlg = new DebtsView
@@ -213,7 +203,122 @@ namespace SW4FED_1.ViewModels
             return CurrentIndex >= 0;
         }
 
+        DelegateCommand _NewFileCommand;
+        public DelegateCommand NewFileCommand
+        {
+            get { return _NewFileCommand ?? (_NewFileCommand = new DelegateCommand(NewFileCommand_Execute)); }
+        }
+
+        private void NewFileCommand_Execute()
+        {
+            MessageBoxResult res = MessageBox.Show("Any unsaved data will be lost. Are you sure you want to initiate a new file?", "Warning",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            if (res == MessageBoxResult.Yes)
+            {
+                Debtors.Clear();
+                Filename = "";
+                Dirty = false;
+            }
+        }
+
+        DelegateCommand _OpenFileCommand;
+        public DelegateCommand OpenFileCommand
+        {
+            get { return _OpenFileCommand ?? (_OpenFileCommand = new DelegateCommand(OpenFileCommand_Execute)); }
+        }
+
+        private void OpenFileCommand_Execute()
+        {
+            var dialog = new OpenFileDialog
+            {
+                DefaultExt = "dbt"
+            };
+            if (filePath == "")
+                dialog.InitialDirectory =
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+                dialog.InitialDirectory = Path.GetDirectoryName(filePath);
+            if (dialog.ShowDialog(App.Current.MainWindow) == true)
+            {
+                filePath = dialog.FileName;
+                Filename = Path.GetFileName(filePath);
+
+                try
+                {
+                    Debtors = FileHandler.ReadFile(filePath);
+                    Dirty = false;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Unable to open file", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+            }
+        }
+
+        DelegateCommand _SaveAsCommand;
+        public DelegateCommand SaveAsCommand
+        {
+            get { return _SaveAsCommand ?? (_SaveAsCommand = new DelegateCommand(SaveAsCommand_Execute)); }
+        }
+
+        private void SaveAsCommand_Execute()
+        {
+            var dialog = new SaveFileDialog
+            {
+                DefaultExt = "dbt"
+            };
+            if (filePath == "")
+                dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            else
+                dialog.InitialDirectory = Path.GetDirectoryName(filePath);
+
+            if (dialog.ShowDialog(App.Current.MainWindow) == true)
+            {
+                filePath = dialog.FileName;
+                Filename = Path.GetFileName(filePath);
+                SaveFile();
+            }
+        }
+
+        DelegateCommand _SaveCommand;
+        public DelegateCommand SaveCommand
+        {
+            get
+            {
+                return _SaveCommand ?? (_SaveCommand = new
+                   DelegateCommand(SaveFileCommand_Execute, SaveFileCommand_CanExecute)
+                  .ObservesProperty(() => Debtors.Count));
+            }
+        }
+
+        private void SaveFileCommand_Execute()
+        {
+            SaveFile();
+        }
+
+        private bool SaveFileCommand_CanExecute()
+        {
+            return (filename != "") && (Debtors.Count > 0);
+        }
+
+        private void SaveFile()
+        {
+            try
+            {
+                FileHandler.SaveFile(filePath, Debtors);
+                Dirty = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Unable to save file", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         #endregion
+
+
 
     }
 }

@@ -53,6 +53,10 @@ namespace SW4FED_1.ViewModels
                 return isValid;
             }
         }
+
+        #endregion
+
+        #region Commands
         ICommand _okBtnCommand;
         public ICommand OkBtnCommand
         {

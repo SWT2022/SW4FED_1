@@ -65,6 +65,10 @@ namespace SW4FED_1.ViewModels
             }
         }
 
+        #endregion
+
+        #region Commands
+
         private DelegateCommand addValueCommand;
         public DelegateCommand AddValueCommand =>
             addValueCommand ?? (addValueCommand = new
